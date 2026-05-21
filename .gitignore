@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+.nuxt/
+.output/
+.turbo/
+*.tsbuildinfo
+
+# Drizzle: keep drizzle/ (migrations + meta journal must be versioned so
+# `drizzle-kit generate` produces consistent diffs across machines).
+
+# Env
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploads (dev media library)
+uploads/
+
+# Test
+coverage/

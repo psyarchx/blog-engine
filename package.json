@@ -1,0 +1,30 @@
+{
+  "name": "blog-engine",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Multi-theme blog engine with CMS and visual page builder",
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=20.11.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:web": "turbo run dev --filter=@blog-engine/web",
+    "dev:cms": "turbo run dev --filter=@blog-engine/cms",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "db:generate": "pnpm --filter @blog-engine/db generate",
+    "db:migrate": "pnpm --filter @blog-engine/db migrate",
+    "db:seed": "pnpm --filter @blog-engine/db seed",
+    "db:studio": "pnpm --filter @blog-engine/db studio",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.3"
+  }
+}

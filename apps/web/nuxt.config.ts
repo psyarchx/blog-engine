@@ -9,9 +9,9 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   runtimeConfig: {
-    databaseUrl: '',
+    databaseUrl: process.env.DATABASE_URL ?? '',
     public: {
-      siteName: 'Blog Engine',
+      siteName: process.env.WEB_SITE_NAME ?? 'Blog Engine',
     },
   },
 

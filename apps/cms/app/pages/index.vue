@@ -1,21 +1,26 @@
 <script setup lang="ts">
-const config = useRuntimeConfig()
-const cmsName = config.public.cmsName
+const { data: me } = await useMe()
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center p-8">
-    <UCard class="max-w-xl w-full">
-      <template #header>
-        <div class="flex items-center justify-between">
-          <h1 class="text-xl font-semibold">{{ cmsName }}</h1>
-          <UBadge color="warning" variant="subtle">Phase 0</UBadge>
-        </div>
-      </template>
+  <div>
+    <header class="h-14 border-b border-(--ui-border) bg-(--ui-bg) px-6 flex items-center">
+      <h1 class="font-semibold">Dashboard</h1>
+    </header>
 
-      <p class="text-(--ui-text-muted)">
-        Admin scaffold is ready. Auth, users, posts and the page builder will land in the next phases.
-      </p>
-    </UCard>
+    <div class="p-6 space-y-4">
+      <UCard>
+        <template #header>
+          <div class="flex items-center justify-between">
+            <h2 class="font-medium">Welcome, {{ me?.user?.name }}</h2>
+            <UBadge color="warning" variant="subtle">Phase 1</UBadge>
+          </div>
+        </template>
+
+        <p class="text-(--ui-text-muted)">
+          Auth is live. Posts, media and the page builder land in the next phases.
+        </p>
+      </UCard>
+    </div>
   </div>
 </template>

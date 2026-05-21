@@ -1,4 +1,10 @@
 import { defineConfig } from 'drizzle-kit'
+import { config as loadEnv } from 'dotenv'
+import { resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const here = fileURLToPath(new URL('.', import.meta.url))
+loadEnv({ path: resolve(here, '../../.env') })
 
 const databaseUrl = process.env.DATABASE_URL
 if (!databaseUrl) {

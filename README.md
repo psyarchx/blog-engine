@@ -19,11 +19,12 @@ apps/
   web/       Public blog (port 3000)
   cms/       Admin (port 3001)
 packages/
-  db/        Drizzle schema, client, migrations, seed
+  auth/      better-auth setup, Drizzle adapter, role helpers
+  db/        Drizzle schema, client, migrations
   shared/    Cross-package TypeScript types (PostContent, PageLayout, ...)
 ```
 
-Future packages (added per phase): `auth`, `editor`, `blocks`, `themes`, `builder`, `ui`.
+Future packages (added per phase): `editor`, `blocks`, `themes`, `builder`, `ui`.
 
 ## Prerequisites
 
@@ -44,12 +45,13 @@ pnpm install
 
 # 2. Copy env and tweak if needed
 cp .env.example .env
+#    Important: set AUTH_SECRET to a long random string.
+#    Generate one with:  openssl rand -base64 32
 
 # 3. Start Postgres
 pnpm docker:up
 
-# 4. Generate & apply migrations, then seed
-pnpm db:generate
+# 4. Apply migrations + seed the admin user
 pnpm db:migrate
 pnpm db:seed
 ```
@@ -64,6 +66,21 @@ pnpm dev
 pnpm dev:web    # http://localhost:3000
 pnpm dev:cms    # http://localhost:3001
 ```
+
+### Default admin
+
+After `pnpm db:seed`, sign in at <http://localhost:3001/login> with:
+
+- **email**: `admin@example.com`
+- **password**: `admin1234`
+
+Override via `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` in `.env` before seeding.
+
+### Inviting users
+
+With `RESEND_API_KEY` unset, invite emails are printed to the CMS dev-server
+console as `[email:dev] { to, subject, text }` — paste the link from there.
+Set the key to send real emails.
 
 ## Other commands
 

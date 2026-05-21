@@ -4,17 +4,21 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "nuxt dev --port 3001",
+    "dev": "nuxt dev --port 3001 --dotenv ../../.env",
     "build": "nuxt build",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
+    "seed": "tsx --env-file=../../.env scripts/seed.ts",
     "typecheck": "nuxt typecheck",
     "lint": "eslint ."
   },
   "dependencies": {
+    "@blog-engine/auth": "workspace:*",
     "@blog-engine/db": "workspace:*",
     "@blog-engine/shared": "workspace:*",
     "@nuxt/ui": "^3.0.0",
+    "better-auth": "^1.1.13",
+    "drizzle-orm": "^0.45.2",
     "nuxt": "^3.15.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
@@ -23,6 +27,7 @@
     "@nuxt/eslint": "^0.7.5",
     "@types/node": "^22.10.5",
     "eslint": "^9.18.0",
+    "tsx": "^4.19.2",
     "typescript": "^5.7.3",
     "vue-tsc": "^2.2.0"
   }

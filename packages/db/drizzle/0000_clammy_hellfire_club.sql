@@ -2,6 +2,22 @@ CREATE TYPE "public"."user_role" AS ENUM('admin', 'editor', 'author');--> statem
 CREATE TYPE "public"."post_status" AS ENUM('draft', 'scheduled', 'published');--> statement-breakpoint
 CREATE TYPE "public"."page_status" AS ENUM('draft', 'published');--> statement-breakpoint
 CREATE TYPE "public"."page_type" AS ENUM('static', 'home', 'blog_index', 'post_template', 'tag_template', 'author_template');--> statement-breakpoint
+CREATE TABLE "accounts" (
+	"id" text PRIMARY KEY NOT NULL,
+	"user_id" text NOT NULL,
+	"account_id" text NOT NULL,
+	"provider_id" text NOT NULL,
+	"access_token" text,
+	"refresh_token" text,
+	"id_token" text,
+	"access_token_expires_at" timestamp with time zone,
+	"refresh_token_expires_at" timestamp with time zone,
+	"scope" text,
+	"password" text,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE "invites" (
 	"id" text PRIMARY KEY NOT NULL,
 	"email" text NOT NULL,
@@ -16,17 +32,30 @@ CREATE TABLE "invites" (
 CREATE TABLE "sessions" (
 	"id" text PRIMARY KEY NOT NULL,
 	"user_id" text NOT NULL,
+	"token" text NOT NULL,
 	"expires_at" timestamp with time zone NOT NULL,
-	"created_at" timestamp with time zone DEFAULT now() NOT NULL
+	"ip_address" text,
+	"user_agent" text,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "users" (
 	"id" text PRIMARY KEY NOT NULL,
 	"email" text NOT NULL,
+	"email_verified" boolean DEFAULT false NOT NULL,
 	"name" text NOT NULL,
-	"avatar_url" text,
+	"image" text,
 	"role" "user_role" DEFAULT 'author' NOT NULL,
-	"password_hash" text,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "verifications" (
+	"id" text PRIMARY KEY NOT NULL,
+	"identifier" text NOT NULL,
+	"value" text NOT NULL,
+	"expires_at" timestamp with time zone NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
@@ -89,6 +118,7 @@ CREATE TABLE "audit_log" (
 	"at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
+ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "invites" ADD CONSTRAINT "invites_invited_by_users_id_fk" FOREIGN KEY ("invited_by") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "posts" ADD CONSTRAINT "posts_cover_image_id_media_id_fk" FOREIGN KEY ("cover_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
@@ -96,6 +126,7 @@ ALTER TABLE "posts" ADD CONSTRAINT "posts_author_id_users_id_fk" FOREIGN KEY ("a
 ALTER TABLE "media" ADD CONSTRAINT "media_uploaded_by_users_id_fk" FOREIGN KEY ("uploaded_by") REFERENCES "public"."users"("id") ON DELETE restrict ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "audit_log" ADD CONSTRAINT "audit_log_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
 CREATE UNIQUE INDEX "invites_token_unique" ON "invites" USING btree ("token");--> statement-breakpoint
+CREATE UNIQUE INDEX "sessions_token_unique" ON "sessions" USING btree ("token");--> statement-breakpoint
 CREATE UNIQUE INDEX "users_email_unique" ON "users" USING btree ("email");--> statement-breakpoint
 CREATE UNIQUE INDEX "posts_slug_unique" ON "posts" USING btree ("slug");--> statement-breakpoint
 CREATE INDEX "posts_status_idx" ON "posts" USING btree ("status");--> statement-breakpoint

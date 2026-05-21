@@ -9,12 +9,13 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   runtimeConfig: {
-    databaseUrl: '',
-    authSecret: '',
-    resendApiKey: '',
+    databaseUrl: process.env.DATABASE_URL ?? '',
+    authSecret: process.env.AUTH_SECRET ?? '',
+    resendApiKey: process.env.RESEND_API_KEY ?? '',
     public: {
-      cmsName: 'Blog CMS',
-      webOrigin: 'http://localhost:3000',
+      cmsName: process.env.CMS_NAME ?? 'Blog CMS',
+      cmsOrigin: process.env.CMS_ORIGIN ?? 'http://localhost:3001',
+      webOrigin: process.env.CMS_WEB_ORIGIN ?? 'http://localhost:3000',
     },
   },
 

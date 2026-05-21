@@ -17,7 +17,7 @@
     "typecheck": "turbo run typecheck",
     "db:generate": "pnpm --filter @blog-engine/db generate",
     "db:migrate": "pnpm --filter @blog-engine/db migrate",
-    "db:seed": "pnpm --filter @blog-engine/db seed",
+    "db:seed": "pnpm --filter @blog-engine/cms seed",
     "db:studio": "pnpm --filter @blog-engine/db studio",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
